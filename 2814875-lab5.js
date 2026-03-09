@@ -46,13 +46,20 @@ app.put('/books/:id',(req,res)=>{
     if(!book){
         return res.status(404).json({error:'Book not found'});
     }
+    if(title){
+        book.title = title;
+    }
+
+    if(details && Array.isArray(details)){
+        book.details = details;
+    }
     return res.status(200).json(books);
 });
 
 app.delete('/books/:id',(req,res)=>{
     const {id}=req.params;
     const bookIndex=books.findIndex(book=>book.id===id);
-    if(bookIndex==-1){
+    if(bookIndex===-1){
         return res.status(404).json({error:'Book not found'});
     }
     books.splice(bookIndex,1);
