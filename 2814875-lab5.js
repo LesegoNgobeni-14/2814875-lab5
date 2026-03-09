@@ -24,7 +24,7 @@ app.get('/books/:id', (req,res)=>{
     if(!book){
         return res.status(404).json({error:'Book not found'});
     }
-    return res.status(200).json(books);
+    return res.status(200).json(book);
 });
 
 app.post('/books',(req,res)=>{
@@ -34,7 +34,7 @@ app.post('/books',(req,res)=>{
     }
     const newBook={id:String(id),
                    title:title,
-                   details:details||[]};
+                   details:Array.isArray(details)?details:[]};
     books.push(newBook)            
     return res.status(201).json(newBook);
 });
@@ -42,7 +42,7 @@ app.post('/books',(req,res)=>{
 app.put('/books/:id',(req,res)=>{
     const {id}=req.params;
     const {title,details}=req.body;
-    const book=books.find(book=>bookid===id);
+    const book=books.find(book=>book.id===id);
     if(!book){
         return res.status(404).json({error:'Book not found'});
     }
@@ -51,7 +51,7 @@ app.put('/books/:id',(req,res)=>{
 
 app.delete('/books/:id',(req,res)=>{
     const {id}=req.params;
-    const bookIndex=books.findIndex(bok=>book.id===id);
+    const bookIndex=books.findIndex(book=>book.id===id);
     if(bookIndex==-1){
         return res.status(404).json({error:'Book not found'});
     }
@@ -69,6 +69,10 @@ app.post('/books/:id/details',(req,res)=>{
     if (!detailId||!author||!genre||publicationYear===undefined){
         return res.status(400).json({error:'Missing Fields'});
     }
+    const newDetail={id:String(detailId),
+                    author:author,
+                    genre: genre,
+                    publicationYear: publicationYear};
     book.details.push(newDetail);
     return res.status(201).json(book);
 });
