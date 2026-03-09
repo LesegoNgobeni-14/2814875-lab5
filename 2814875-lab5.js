@@ -53,7 +53,7 @@ app.put('/books/:id',(req,res)=>{
     if(details && Array.isArray(details)){
         book.details = details;
     }
-    return res.status(200).json(books);
+    return res.status(200).json(book);
 });
 
 app.delete('/books/:id',(req,res)=>{
